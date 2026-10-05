@@ -8,6 +8,7 @@ This repo mirrors [`cursor/plugins/pstack`](https://github.com/cursor/plugins/tr
 - `agents-pi/`: upstream's two agents plus a `skills:` line. pi-subagents starts custom agents without the skill catalog, and `poteto-mode`, `how`, and `why` are hidden from it (`disable-model-invocation: true`).
 - `.claude-plugin/` and `.codex-plugin/`: plugin manifests. Codex also reads `.claude-plugin/marketplace.json`.
 - `MIRROR.md`: this file.
+- `CUSTOMIZATION.md`: the plan for building a personal stack on top of this mirror.
 
 Everything else matches upstream byte for byte. The `upstream` branch holds the exact copy.
 
