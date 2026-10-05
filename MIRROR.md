@@ -18,7 +18,7 @@ Skills run bundled scripts, for example `skills/poteto-mode/scripts/`. Read them
 pstack was written for Cursor. Outside Cursor, these parts are untested:
 
 - Skills that spawn subagents call Cursor's `Task` tool with `subagent_type: generalPurpose`. Your agent has to map that to its own subagent tool.
-- `/setup-pstack` writes `~/.cursor/rules/pstack-models.mdc`, which only Cursor loads automatically. `swarm`, `arena`, `interrogate`, `how`, and `why` read it by path. `poteto-mode` does not, so it keeps its own model defaults.
+- `/setup-pstack` writes `~/.cursor/rules/pstack-models.mdc`, which only Cursor loads automatically. `swarm`, `arena`, and `interrogate` name the full path, so an agent elsewhere can read it. `how`, `why`, `architect`, and `reflect` name only `pstack-models.mdc`, so outside Cursor they likely fall back to their defaults. `poteto-mode` never names the file and keeps its own defaults.
 - Default model names (grok, opus 5.5, sol) are Cursor slugs.
 
 ## Install
