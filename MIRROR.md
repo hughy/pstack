@@ -1,12 +1,13 @@
 # pstack mirror
 
-This repo mirrors [`cursor/plugins/pstack`](https://github.com/cursor/plugins/tree/main/pstack) so pstack installs in pi, Claude Code, and Codex. `README.md` is upstream's, unchanged. Cursor users should install upstream with `/add-plugin pstack`.
+This repo mirrors [`cursor/plugins/pstack`](https://github.com/cursor/plugins/tree/main/pstack) so pstack installs in pi, Claude Code, and Codex. `README.md` is upstream's with a short mirror preface above it. Cursor users should install upstream with `/add-plugin pstack`.
 
 ## What differs from upstream
 
 - `skills/poteto-mode/SKILL.md` and `skills/make-bot-ui/SKILL.md`: frontmatter `name` uses the folder name (`poteto-mode`, `make-bot-ui`). pi's `/skill:` command stops at the first space, so the upstream names `Poteto Mode` and `Make Bot UI` can't be invoked.
 - `agents-pi/`: upstream's two agents plus a `skills:` line. pi-subagents starts custom agents without the skill catalog, and `poteto-mode`, `how`, and `why` are hidden from it (`disable-model-invocation: true`).
 - `.claude-plugin/` and `.codex-plugin/`: plugin manifests. Codex also reads `.claude-plugin/marketplace.json`.
+- `README.md`: a mirror preface above Cursor's README.
 - `MIRROR.md`: this file.
 
 Everything else matches upstream byte for byte. The `upstream` branch holds the exact copy.
@@ -89,7 +90,7 @@ Vendor this repo into your layer with `git subtree add --prefix pstack <path-or-
 git clone --depth 1 --filter=blob:none --sparse https://github.com/cursor/plugins.git /tmp/cursor-plugins
 git -C /tmp/cursor-plugins sparse-checkout set pstack
 git switch upstream
-rsync -a --delete --exclude .git --exclude MIRROR.md /tmp/cursor-plugins/pstack/ ./
+rsync -a --delete --exclude .git --exclude MIRROR.md /tmp/cursor-plugins/pstack/ ./   # README.md is overwritten here; the merge below keeps the preface
 git add -A
 git commit -m "upstream: cursor/plugins/pstack @ $(git -C /tmp/cursor-plugins rev-parse --short HEAD)"
 git switch main

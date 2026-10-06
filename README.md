@@ -1,3 +1,50 @@
+# pstack mirror
+
+Mirror of [`cursor/plugins/pstack`](https://github.com/cursor/plugins/tree/main/pstack), kept in sync so pstack installs in pi, Claude Code, Codex, and any agent that reads Agent Skills. Cursor users should install upstream with `/add-plugin pstack`. Cursor's original README follows below, unchanged.
+
+## What this mirror is
+
+- The `upstream` branch is a byte-exact copy of Cursor's `pstack/` directory. `main` is `upstream` plus the smallest set of edits that make it install elsewhere: two skill `name` fields, pi agent files, plugin manifests, and this preface.
+- Skills are not rewritten. Those that spawn subagents still name Cursor's `Task` tool and Cursor model slugs. Your harness maps those, or you write a layer that does. [`MIRROR.md`](./MIRROR.md) lists what is untested outside Cursor and how to customize without editing mirrored files.
+
+## Install
+
+Clone, then follow the section for your host in [`MIRROR.md`](./MIRROR.md#install). The short form:
+
+| Host | Command |
+| --- | --- |
+| pi | add `~/dev/pstack/skills` to `skills` in `~/.pi/agent/settings.json`; symlink `agents-pi/` into `~/.pi/agent/agents/` |
+| Claude Code | `claude plugin marketplace add ~/dev/pstack && claude plugin install pstack@pstack` |
+| Codex | `codex plugin marketplace add ~/dev/pstack`, then install from `/plugins` |
+| Any Agent Skills host | `npx skills add ~/dev/pstack` (skills only, no agents) |
+
+## Which skills stand alone
+
+Each skill is a folder, so you can install a subset. These reference no other pstack skill: `arena`, `benchmark-checklist`, `bro`, `correct`, `how`, `interrogate`, `make-bot-ui`, `reflect`, `swarm`, `tdd`, `typescript-best-practices`, `unslop`. The 24 `principle-*` skills are each one file; `poteto-mode` indexes them and other skills cite them by name.
+
+The rest need companions:
+
+| Skill | Needs |
+| --- | --- |
+| `why` | `how` |
+| `teach` | `how`, `why`, `unslop` |
+| `blast-radius` | `how`, `why`, `arena`, `unslop` |
+| `architect` | `arena`, `how`, `why`, `interrogate` |
+| `no-comments` | `architect`, `how`, `why`, the `Comment Sicko` agent |
+| `technical-writing`, `show-me-your-work` | `unslop` |
+| `recall`, `automate-me` | `unslop`, `why` or `poteto-mode` |
+| `create-verification-skill`, `maintain-verification-skill` | each other |
+| `figure-it-out` | `architect`, `arena`, `show-me-your-work`, `poteto-mode` |
+| `poteto-mode`, `poteto-help` | most of the above, all `principle-*` skills, and the playbooks under `skills/poteto-mode/` |
+
+Regenerate this with a grep for `**<name>**`, `` `<name>` ``, or `/<name>` across `skills/*/SKILL.md`.
+
+## Sync
+
+See [`MIRROR.md`](./MIRROR.md#sync-with-upstream). Cursor's files land on `upstream` and merge into `main`; this preface and `MIRROR.md` are the only prose the mirror owns.
+
+---
+
 # pstack
 
 i'm [poteto](https://x.com/poteto). i'm not a president or ceo, but i've worked with millions of lines of code at Meta, Netflix, and Cursor. i'm also on the react core team where i help build and maintain react compiler.
