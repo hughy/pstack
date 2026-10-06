@@ -5,7 +5,7 @@ Mirror of [`cursor/plugins/pstack`](https://github.com/cursor/plugins/tree/main/
 ## What this mirror is
 
 - The `upstream` branch is a byte-exact copy of Cursor's `pstack/` directory. `main` is `upstream` plus the smallest set of edits that make it install elsewhere: two skill `name` fields, pi agent files, plugin manifests, and this preface.
-- Skills are not rewritten. Those that spawn subagents still name Cursor's `Task` tool and Cursor model slugs. Your harness maps those, or you write a layer that does. [`MIRROR.md`](./MIRROR.md) lists what is untested outside Cursor and how to customize without editing mirrored files.
+- The mirror does not rewrite skills. Those that spawn subagents still name Cursor's `Task` tool and Cursor model slugs. Your harness maps those, or a layer on top does. [`MIRROR.md`](./MIRROR.md) lists what is untested outside Cursor and how to customize without editing mirrored files.
 
 ## Install
 
@@ -32,7 +32,9 @@ The rest need companions:
 | `architect` | `arena`, `how`, `why`, `interrogate` |
 | `no-comments` | `architect`, `how`, `why`, the `Comment Sicko` agent |
 | `technical-writing`, `show-me-your-work` | `unslop` |
-| `recall`, `automate-me` | `unslop`, `why` or `poteto-mode` |
+| `recall` | `automate-me`, `why`, `unslop` |
+| `automate-me` | `poteto-mode`, `unslop` |
+| `setup-pstack` | `create-verification-skill`, offered when the project has no verify skill |
 | `create-verification-skill`, `maintain-verification-skill` | each other |
 | `figure-it-out` | `architect`, `arena`, `show-me-your-work`, `poteto-mode` |
 | `poteto-mode`, `poteto-help` | most of the above, all `principle-*` skills, and the playbooks under `skills/poteto-mode/` |

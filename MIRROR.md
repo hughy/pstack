@@ -72,12 +72,12 @@ This copies the skills only, without the agents.
 
 ## Customize without editing the mirror
 
-Every edit to a mirrored file is a merge conflict at the next sync. Keep your opinions in a layer that sits on top:
+Every edit to a mirrored file can conflict at the next sync. Keep your opinions in a layer that sits on top:
 
 - Put your own skills directory first in your harness's load order and point it at this repo second. pi keeps the first skill it finds for a name, so a skill in your directory shadows the pstack one.
 - Pick which pstack skills load. Either exclude the ones you do not want (pi: `"!~/dev/pstack/skills/<name>"`), or keep an allowlist of symlinks into `skills/` and point every harness at that directory only. The allowlist works the same on every host; exclusions are per host.
 - Write your own entry-point skill instead of editing `poteto-mode`. It can read any playbook under `skills/poteto-mode/playbooks/` by path and state where your rules differ.
-- Pin models in your harness's own agent files (pi: `~/.pi/agent/agents/*.md` with `model:`) rather than in `pstack-models.mdc`, which only Cursor loads.
+- Pin models in your harness's own agent files (pi: `~/.pi/agent/agents/*.md` with `model:`). Only Cursor loads `pstack-models.mdc`.
 - Keep one file that lists each pstack skill you shadow, skip, or copy, with the reason and the upstream commit you took it from. At each sync, diff upstream between that commit and the new head for those skills and port what matters.
 
 Vendor this repo into your layer with `git subtree add --prefix pstack <path-or-url> main` and pull it with `git subtree pull` at each sync.
@@ -90,11 +90,13 @@ Vendor this repo into your layer with `git subtree add --prefix pstack <path-or-
 git clone --depth 1 --filter=blob:none --sparse https://github.com/cursor/plugins.git /tmp/cursor-plugins
 git -C /tmp/cursor-plugins sparse-checkout set pstack
 git switch upstream
-rsync -a --delete --exclude .git --exclude MIRROR.md /tmp/cursor-plugins/pstack/ ./   # README.md is overwritten here; the merge below keeps the preface
+rsync -a --delete --exclude .git --exclude MIRROR.md /tmp/cursor-plugins/pstack/ ./
 git add -A
 git commit -m "upstream: cursor/plugins/pstack @ $(git -C /tmp/cursor-plugins rev-parse --short HEAD)"
 git switch main
 git merge upstream
 ```
+
+The rsync overwrites `README.md` on `upstream`. The merge into `main` keeps the preface.
 
 If `agents/` changed, copy each file into `agents-pi/` again and re-add its `skills:` line. If a merge conflict touches a skill `name`, keep upstream's change and restore the folder-name form.
