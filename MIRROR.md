@@ -8,7 +8,6 @@ This repo mirrors [`cursor/plugins/pstack`](https://github.com/cursor/plugins/tr
 - `agents-pi/`: upstream's two agents plus a `skills:` line. pi-subagents starts custom agents without the skill catalog, and `poteto-mode`, `how`, and `why` are hidden from it (`disable-model-invocation: true`).
 - `.claude-plugin/` and `.codex-plugin/`: plugin manifests. Codex also reads `.claude-plugin/marketplace.json`.
 - `MIRROR.md`: this file.
-- `CUSTOMIZATION.md`: the plan for building a personal stack on top of this mirror.
 
 Everything else matches upstream byte for byte. The `upstream` branch holds the exact copy.
 
@@ -69,6 +68,18 @@ npx skills add ~/dev/pstack
 ```
 
 This copies the skills only, without the agents.
+
+## Customize without editing the mirror
+
+Every edit to a mirrored file is a merge conflict at the next sync. Keep your opinions in a layer that sits on top:
+
+- Put your own skills directory first in your harness's load order and point it at this repo second. pi keeps the first skill it finds for a name, so a skill in your directory shadows the pstack one.
+- Pick which pstack skills load. Either exclude the ones you do not want (pi: `"!~/dev/pstack/skills/<name>"`), or keep an allowlist of symlinks into `skills/` and point every harness at that directory only. The allowlist works the same on every host; exclusions are per host.
+- Write your own entry-point skill instead of editing `poteto-mode`. It can read any playbook under `skills/poteto-mode/playbooks/` by path and state where your rules differ.
+- Pin models in your harness's own agent files (pi: `~/.pi/agent/agents/*.md` with `model:`) rather than in `pstack-models.mdc`, which only Cursor loads.
+- Keep one file that lists each pstack skill you shadow, skip, or copy, with the reason and the upstream commit you took it from. At each sync, diff upstream between that commit and the new head for those skills and port what matters.
+
+Vendor this repo into your layer with `git subtree add --prefix pstack <path-or-url> main` and pull it with `git subtree pull` at each sync.
 
 ## Sync with upstream
 
